@@ -1,5 +1,8 @@
 ﻿using Newtonsoft.Json;
+using OpenWeatherMap.Models;
 using OpenWeatherMapTest.Models;
+using Plugin.Settings;
+using Plugin.Settings.Abstractions;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -8,19 +11,23 @@ using System.Threading.Tasks;
 
 namespace OpenWeatherMap.Services
 {
-    class OpenWeatherMapService
+    public class OpenWeatherMapService
     {
-        private readonly Uri Uri = new Uri("http://api.openweathermap.org/data/2.5/");
+        //private readonly Uri Uri = new Uri("http://api.openweathermap.org/data/2.5/");
 
-        private readonly string ApiKey = "APPID=4ea98f74622072acddf2f67deb259125";
+        //private readonly string ApiKey = "APPID=4ea98f74622072acddf2f67deb259125";
+
+        public void SetCredentials()
+        {
+            SettingsService.Uri = "http://api.openweathermap.org/data/2.5/";
+            SettingsService.ApiKey = "4ea98f74622072acddf2f67deb259125";
+            SettingsService.Units = "metric";
+        }
 
         private async Task<T> GetAsync<T>(Uri uri)
         {
             using (var client = new HttpClient())
             {
-                // Adding the required headers
-                client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
-
                 // Ignoring null values and missing members from response
                 var settings = new JsonSerializerSettings
                 {
@@ -40,6 +47,14 @@ namespace OpenWeatherMap.Services
             }
         }
 
-        public async Task<WeatherData> GetWeatherForCityAsync(string query) => await GetAsync<WeatherData>(new Uri(Uri, $"weather?q={query}&{ApiKey}"));
+        public async Task<WeatherData> GetWeatherForCityAsync(string query)
+        {
+            return await GetAsync<WeatherData>(new Uri(SettingsService.Uri + $"weather?q={query}&units={SettingsService.Units}&APPID={SettingsService.ApiKey}"));
+        }
+
+        public async Task<Forecast> GetForecastForCityAsync(string query)
+        {
+            return await GetAsync<Forecast>(new Uri(SettingsService.Uri + $"forecast?q={query}&units={SettingsService.Units}&APPID={SettingsService.ApiKey}"));
+        }
     }
 }

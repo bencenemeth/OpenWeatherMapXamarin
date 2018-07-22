@@ -6,10 +6,10 @@ namespace OpenWeatherMapTest.Models
 {
     public class MainWeatherData
     {
-        public float Temperature;
-        public float Pressure;
-        public float Humidity;
-        public float TempMin;
-        public float TempMax;
+        public float Temp { get; set; }
+        public float Pressure { get; set; }
+        public float Humidity { get; set; }
+        public float TempMin { get; set; }
+        public float TempMax { get; set; }
     }
 }
