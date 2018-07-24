@@ -6,13 +6,16 @@ using Xamarin.Forms;
 
 namespace OpenWeatherMap.Converters
 {
+    /// <summary>
+    /// Converting unix utc timestamp to DateTimeOffset
+    /// </summary>
+    // OpenWeatherMaps API doesn't provide timezone information.
+    // TODO: FIX TIMEZONE
     public class DateTimeConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            //DateTime dateTime = new DateTime((long)value);
             DateTimeOffset dateTimeOffset = DateTimeOffset.FromUnixTimeSeconds((long)value);
-            //return dateTimeOffset.Hour.ToString("t") + ":" + dateTimeOffset.Minute.ToString("MM");
             return dateTimeOffset.ToString("t");
         }
 

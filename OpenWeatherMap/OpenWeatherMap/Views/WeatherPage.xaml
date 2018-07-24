@@ -77,6 +77,7 @@
                  BackgroundColor="Black"
                  HorizontalOptions="FillAndExpand" />
 
+            <!-- TODO: FIX HEIGHT -->
             <RelativeLayout HeightRequest="60">
                 <ListView Rotation="270"
                       ItemsSource="{Binding ForecastList}"
@@ -116,7 +117,7 @@
                     </ListView.ItemTemplate>
                 </ListView>
             </RelativeLayout>
-
+            <!-- TODO: FIX HEIGHT -->
 
 
             <BoxView HeightRequest="1"

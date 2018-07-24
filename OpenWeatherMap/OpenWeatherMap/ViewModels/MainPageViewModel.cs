@@ -10,6 +10,9 @@ namespace OpenWeatherMap.ViewModels
 {
     public class MainPageViewModel : ViewModelBase
     {
+        /// <summary>
+        /// City object
+        /// </summary>
         private string _city;
         public string City
         {
@@ -28,6 +31,9 @@ namespace OpenWeatherMap.ViewModels
             NavigateToWeatherPageCommand = new DelegateCommand(NavigateToWeatherPage);
         }
 
+        /// <summary>
+        /// Navigate to weather page with city name as parameter.
+        /// </summary>
         private void NavigateToWeatherPage()
         {
             _navigationService.NavigateAsync("WeatherPage", new NavigationParameters

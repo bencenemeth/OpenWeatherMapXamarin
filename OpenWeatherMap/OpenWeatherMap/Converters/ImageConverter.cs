@@ -6,6 +6,9 @@ using Xamarin.Forms;
 
 namespace OpenWeatherMap.Converters
 {
+    /// <summary>
+    /// Converting image sources to image objects
+    /// </summary>
     public class ImageConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)

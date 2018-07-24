@@ -6,6 +6,9 @@ using Xamarin.Forms;
 
 namespace OpenWeatherMap.Converters
 {
+    /// <summary>
+    /// Converting wind direction degrees to actual directions
+    /// </summary>
     public class DegreeDirectionConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)

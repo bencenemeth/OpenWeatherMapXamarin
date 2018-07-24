@@ -66,12 +66,13 @@ namespace OpenWeatherMap.ViewModels
             // City name from parameter values
             string city = parameters.GetValue<string>("city");
             var service = new OpenWeatherMapService();
-            //service.SetCredentials();
+            service.SetCredentials();
             try
             {
                 GetWeather(service, city);
                 GetForecast(service, city);
                 // If nothing returned, go back to previous page
+                // TODO: FIX ASYNC RETURN
                 /*if (WeatherData == null || Forecast == null)
                 {
                     IsBusy = false;

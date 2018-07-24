@@ -14,9 +14,12 @@ namespace OpenWeatherMap.Services
     public class OpenWeatherMapService
     {
         //private readonly Uri Uri = new Uri("http://api.openweathermap.org/data/2.5/");
-
         //private readonly string ApiKey = "APPID=4ea98f74622072acddf2f67deb259125";
 
+        /// <summary>
+        /// Setting the server uri, apikey for the service.
+        /// </summary>
+        // TODO: hardcoded
         public void SetCredentials()
         {
             SettingsService.Uri = "http://api.openweathermap.org/data/2.5/";
@@ -47,11 +50,21 @@ namespace OpenWeatherMap.Services
             }
         }
 
+        /// <summary>
+        /// Getting the current weather
+        /// </summary>
+        /// <param name="query">Name of the city</param>
+        /// <returns></returns>
         public async Task<WeatherData> GetWeatherForCityAsync(string query)
         {
             return await GetAsync<WeatherData>(new Uri(SettingsService.Uri + $"weather?q={query}&units={SettingsService.Units}&APPID={SettingsService.ApiKey}"));
         }
 
+        /// <summary>
+        /// Getting the forecast
+        /// </summary>
+        /// <param name="query">Name of the city</param>
+        /// <returns></returns>
         public async Task<Forecast> GetForecastForCityAsync(string query)
         {
             return await GetAsync<Forecast>(new Uri(SettingsService.Uri + $"forecast?q={query}&units={SettingsService.Units}&APPID={SettingsService.ApiKey}"));
