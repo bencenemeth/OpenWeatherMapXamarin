@@ -31,6 +31,7 @@ namespace OpenWeatherMap
         {
             containerRegistry.RegisterForNavigation<NavigationPage>();
             containerRegistry.RegisterForNavigation<MainPage>();
+            containerRegistry.RegisterForNavigation<WeatherPage>();
         }
     }
 }

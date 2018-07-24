@@ -1,0 +1,210 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
+             prism:ViewModelLocator.AutowireViewModel="True"
+             xmlns:converter="clr-namespace:OpenWeatherMap.Converters"
+             x:Class="OpenWeatherMap.Views.WeatherPage"
+             Title="{Binding Title}">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converter:ImageConverter x:Key="ImageConverter"/>
+            <converter:DegreeDirectionConverter x:Key="DegreeDirectionConverter"/>
+            <converter:DateTimeConverter x:Key="DateTimeConverter"/>
+            <Style x:Key="WeatherData"
+                   TargetType="Label">
+                <Setter Property="FontSize"
+                        Value="18" />
+                <Setter Property="TextColor"
+                        Value="Black" />
+            </Style>
+            <Style x:Key="Place"
+                   TargetType="Label">
+                <Setter Property="FontSize"
+                        Value="28" />
+                <Setter Property="FontAttributes"
+                        Value="Bold" />
+            </Style>
+            <Style x:Key="Temperature"
+                   TargetType="Label">
+                <Setter Property="FontSize"
+                        Value="32" />
+                <Setter Property="FontAttributes"
+                        Value="Bold" />
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ScrollView>
+        <StackLayout>
+            <ActivityIndicator IsEnabled="{Binding IsBusy}"
+                               IsRunning="{Binding IsBusy}"
+                               IsVisible="{Binding IsBusy}"
+                               VerticalOptions="CenterAndExpand"
+                               HorizontalOptions="CenterAndExpand" />
+            <!-- CITY, COUNTRY NAME -->
+            <StackLayout Orientation="Horizontal"
+                         HorizontalOptions="Center">
+                <Label Text="{Binding WeatherData.Name}"
+                       Style="{StaticResource Place}" />
+                <Label Text=","
+                       Style="{StaticResource Place}" />
+                <Label Text="{Binding WeatherData.Sys.Country}"
+                       Style="{StaticResource Place}" />
+            </StackLayout>
+
+            <!-- WEATHER DESCRIPTION -->
+            <Label Text="{Binding WeatherData.Weather[0].Description}"
+                   HorizontalOptions="Center" />
+
+            <!-- TEMPERATURE -->
+            <StackLayout Orientation="Horizontal"
+                     HorizontalOptions="Center">
+                <Label Text="{Binding WeatherData.Main.Temp}"
+                       Style="{StaticResource Temperature}" />
+                <Label Text="°C"
+                       Style="{StaticResource Temperature}" />
+            </StackLayout>
+
+            <!-- WEATHER ICON -->
+            <Image Source="{Binding WeatherData.Weather[0].Icon, Converter={StaticResource ImageConverter}}"
+                   HeightRequest="100"
+                   WidthRequest="100"
+                   HorizontalOptions="Center" />
+
+            <BoxView HeightRequest="1"
+                 BackgroundColor="Black"
+                 HorizontalOptions="FillAndExpand" />
+
+            <!-- TODO: FIX HEIGHT -->
+            <RelativeLayout HeightRequest="60">
+                <ListView Rotation="270"
+                      ItemsSource="{Binding ForecastList}"
+                      RowHeight="60"
+                      RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.5, Constant=-30}"
+                      RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=-0.5, Constant=30}"
+                      RelativeLayout.WidthConstraint="{ConstraintExpression Type=Constant, Constant=60}"
+                      RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <Grid Rotation="90">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="*"/>
+                                    </Grid.RowDefinitions>
+                                    <Label Text="{Binding Dt, Converter={StaticResource DateTimeConverter}}"
+                                           HorizontalTextAlignment="Center"
+                                           VerticalTextAlignment="Center"
+                                           Grid.Row="0" />
+                                    <Image Source="{Binding Weather[0].Icon, Converter={StaticResource ImageConverter}}" 
+                                           MinimumHeightRequest="50"
+                                           MinimumWidthRequest="50"
+                                           HeightRequest="60"
+                                           WidthRequest="60"
+                                           HorizontalOptions="Center"
+                                           VerticalOptions="Center"
+                                           Grid.Row="1" />
+                                    <Label Text="{Binding Main.Temp}" 
+                                            HorizontalTextAlignment="Center"
+                                            VerticalTextAlignment="Center"
+                                            Grid.Row="2" />
+                                </Grid>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </RelativeLayout>
+            <!-- TODO: FIX HEIGHT -->
+
+
+            <BoxView HeightRequest="1"
+                 BackgroundColor="Black"
+                 HorizontalOptions="FillAndExpand" />
+
+            <Grid Margin="8, 8, 8, 8">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <!-- SUNRISE -->
+                <Label Text="Sunrise"
+                   Grid.Column="0"
+                   Grid.Row="0" />
+                <Label Text="{Binding WeatherData.Sys.Sunrise, Converter={StaticResource DateTimeConverter}}"
+                   Style="{StaticResource WeatherData}"
+                   Grid.Column="0"
+                   Grid.Row="1" />
+                <!-- SUNSET -->
+                <Label Text="Sunset"
+                   Grid.Column="1"
+                   Grid.Row="0" />
+                <Label Text="{Binding WeatherData.Sys.Sunset, Converter={StaticResource DateTimeConverter}}"
+                   Style="{StaticResource WeatherData}"
+                   Grid.Column="1"
+                   Grid.Row="1" />
+                <!-- WIND -->
+                <Label Text="Wind"
+                   Grid.Column="0"
+                   Grid.Row="2" />
+                <StackLayout Orientation="Horizontal"
+                         Grid.Column="0"
+                         Grid.Row="3">
+                    <Label Text="{Binding WeatherData.Wind.Deg, Converter={StaticResource DegreeDirectionConverter}}"
+                           Style="{StaticResource WeatherData}" />
+                    <Label Text="{Binding WeatherData.Wind.Speed}"
+                           Style="{StaticResource WeatherData}" />
+                    <Label Text="m/s"
+                           Style="{StaticResource WeatherData}" />
+                </StackLayout>
+                <!-- CLOUND COVER -->
+                <Label Text="Cloud cover"
+                   Grid.Column="1"
+                   Grid.Row="2" />
+                <StackLayout Orientation="Horizontal"
+                         Grid.Column="1"
+                         Grid.Row="3">
+                    <Label Text="{Binding WeatherData.Clouds.All}"
+                       Style="{StaticResource WeatherData}" />
+                    <Label Text="%"
+                       Style="{StaticResource WeatherData}" />
+                </StackLayout>
+                <!-- HUMIDITY -->
+                <Label Text="Humidity"
+                   Grid.Column="0"
+                   Grid.Row="4" />
+                <StackLayout Orientation="Horizontal"
+                         Grid.Column="0"
+                         Grid.Row="5">
+                    <Label Text="{Binding WeatherData.Main.Humidity}"
+                       Style="{StaticResource WeatherData}" />
+                    <Label Text="%"
+                       Style="{StaticResource WeatherData}" />
+                </StackLayout>
+                <!-- PRESSURE -->
+                <Label Text="Pressure"
+                   Grid.Column="1"
+                   Grid.Row="4" />
+                <StackLayout Orientation="Horizontal"
+                         Grid.Column="1"
+                         Grid.Row="5">
+                    <Label Text="{Binding WeatherData.Main.Pressure}"
+                       Style="{StaticResource WeatherData}" />
+                    <Label Text="hPa"
+                       Style="{StaticResource WeatherData}" />
+                </StackLayout>
+            </Grid>
+        </StackLayout>
+    </ScrollView>
+
+</ContentPage>
